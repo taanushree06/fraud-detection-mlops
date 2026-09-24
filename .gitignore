@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.env
+
+# Raw dataset is ~150 MB, too big for GitHub
+data/raw/
+data/processed/
+
+# MLflow local tracking data
+mlruns/
+mlflow.db
+
+# Prediction log (created by the app)
+logs/*.csv
+
+# Intermediate models from training (the final model in models/ IS committed)
+models/candidates/
