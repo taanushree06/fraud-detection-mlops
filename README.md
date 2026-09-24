@@ -1,6 +1,6 @@
 # Credit Card Fraud Detection - MLOps Project
 
-![CI](https://github.com/YOUR_USERNAME/fraud-detection-mlops/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/taanushree06/fraud-detection-mlops/actions/workflows/ci.yml/badge.svg)
 
 ## Objective
 Classify credit card transactions as FRAUDULENT or LEGITIMATE. The project handles class imbalance, compares three models, optimizes the decision threshold, tracks experiments with MLflow, tests the code with pytest, runs CI with GitHub Actions and serves predictions through a Streamlit app.
