@@ -1,0 +1,5 @@
+{
+  "best_model": "XGBoost",
+  "slug": "xgboost",
+  "selected_by": "PR-AUC on validation set"
+}

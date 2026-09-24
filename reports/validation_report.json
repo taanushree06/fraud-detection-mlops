@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "errors": [],
+  "warnings": [
+    "1081 duplicate rows (will be dropped before splitting)"
+  ],
+  "stats": {
+    "rows": 284807,
+    "legitimate": 284315,
+    "fraud": 492,
+    "fraud_percentage": 0.1727,
+    "duplicates": 1081
+  }
+}
