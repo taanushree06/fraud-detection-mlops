@@ -79,3 +79,40 @@ models/ final saved pipeline and threshold
 reports/ EDA charts, comparison table, threshold analysis
 .github/ CI workflow
 
+
+## Monitoring
+Every prediction (from the Streamlit app or the FastAPI `/predict` endpoint) is logged with a timestamp, prediction, fraud probability and threshold used, via `src/monitoring.py`.
+- Streamlit: see the **Monitoring** tab (prediction counts, fraud rate, probability trend, recent predictions).
+- FastAPI: call `GET /stats` for the same counts.
+
+**Note:** on free hosting (Streamlit Cloud / Render), the log file resets when the app restarts or sleeps, since there is no persistent disk. In production this would write to a database instead.
+
+### Data drift
+Data drift means the statistical properties of incoming transactions change over time (e.g. spending patterns shift, fraud tactics evolve). This matters for fraud detection because a model trained on old patterns can silently lose accuracy on new ones, since fraud is rare and slow to gather feedback on.
+
+Run a simple drift check with:python src/check_drift.py
+
+It compares the mean of each feature in new data against the training data, flagging any feature that shifts by more than 0.5 standard deviations.
+
+**When to retrain:** if drift is flagged consistently, if recall on newly-labeled fraud drops, or on a routine schedule (e.g. monthly), regardless of drift.
+
+## Retraining workflow
+
+New labeled data
+|
+Data validation (src/data_validation.py)
+|
+Preprocessing (src/preprocessing.py, fit fresh on the new training split)
+|
+Train candidate model (src/train.py)
+|
+Evaluate on a held-out set (src/evaluate.py, src/threshold.py)
+|
+Compare candidate vs current production model (by PR-AUC on the same test set)
+|
+Better? --Yes--> Register new version in MLflow, alias "production", update models/fraud_pipeline.joblib
+|
+No --> Keep current production model, log the comparison for review
+
+
+This project does not automate retraining (per the scope of this submission), but every piece needed for it already exists as reusable scripts: validation, preprocessing, training, evaluation, and threshold selection.
